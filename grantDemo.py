@@ -159,10 +159,21 @@ class GrantReportDemoApp:
         self.lbl_active_filters.pack(side="left", padx=12)
 
         # Data Preview Section (Excel-like)
-        preview_frame = tk.LabelFrame(self.root, text="3) Client List Preview (Excel-like)", padx=10, pady=10)
-        preview_frame.pack(fill="both", expand=True, padx=10, pady=(0, 10))
+        preview_outer = tk.LabelFrame(self.root, text="3) Client List Preview (Excel-like)", padx=10, pady=10)
+        preview_outer.pack(fill="both", expand=True, padx=10, pady=(0, 10))
 
-        # Treeview for Excel-like display
+        # Counts bar above the grid
+        counts_frame = tk.Frame(preview_outer)
+        counts_frame.pack(fill="x", pady=(0, 6))
+        self.lbl_counts = tk.Label(counts_frame, text="Filtered clients: 0 of 0", fg="#111111", font=("Arial", 12, "bold"))
+        self.lbl_counts.pack(side="left")
+        self.lbl_rows = tk.Label(counts_frame, text="Rows: 0 of 0", fg="#333333")
+        self.lbl_rows.pack(side="left", padx=14)
+
+        # Grid itself
+        preview_frame = tk.Frame(preview_outer)
+        preview_frame.pack(fill="both", expand=True)
+
         self.tree = ttk.Treeview(preview_frame, show="headings")
         self.tree.pack(side="left", fill="both", expand=True)
 
@@ -171,14 +182,6 @@ class GrantReportDemoApp:
         scrollbar_x = ttk.Scrollbar(preview_frame, orient="horizontal", command=self.tree.xview)
         scrollbar_x.pack(side="bottom", fill="x")
         self.tree.configure(yscrollcommand=scrollbar_y.set, xscrollcommand=scrollbar_x.set)
-
-        # Footer counts
-        footer = tk.Frame(self.root)
-        footer.pack(fill="x", padx=10, pady=(0, 10))
-        self.lbl_counts = tk.Label(footer, text="Filtered clients: 0 of 0", fg="#111111", font=("Arial", 12, "bold"))
-        self.lbl_counts.pack(side="left")
-        self.lbl_rows = tk.Label(footer, text="Rows: 0 of 0", fg="#333333")
-        self.lbl_rows.pack(side="left", padx=14)
 
     def log(self, message):
         # Keep the demo clean: show status in a single readable line
